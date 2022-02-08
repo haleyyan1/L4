@@ -114,7 +114,7 @@ public class ArrayListAlgorithms {
      *  DOES mutate (modify) elements in numList
      *  PRECONDITION: numList1.size() > 0
      *
-     *  @param numList1  arraylist of Integers
+     *  @param /numList1  arraylist of Integers
      */
     public static void removeOdds(ArrayList<Integer> numList)
     {
@@ -161,16 +161,14 @@ public class ArrayListAlgorithms {
      */
     public static void removeDuplicates(ArrayList<Integer> intList)
     {
-        for (int i = 0; i<intList.size();i++) {
-            int du = 0;
-            for (int in = 0; in < intList.size(); in++) {
-                if (intList.get(i) == intList.get(i)) {
-                    du++;
-                    if (du == 2) {
-                        intList.remove(in);
-                        in--;
-                    }
-                }
+        String s = "";
+        for (int i = 0; i<intList.size();i++){
+            if (s.indexOf(""+intList.get(i))==-1) {
+                s+=intList.get(i);
+            }
+            else {
+                intList.remove(i);
+                i--;
             }
         }
     }
@@ -230,14 +228,89 @@ public class ArrayListAlgorithms {
         for (int i = 0;i<s.length();i++){
             if (s.substring(i,i+1).equals(" ")) {
                 o.add(s.substring(0,i));
-                System.out.println(s.substring(0,i));
                 s=s.substring(i+1);
+                i=0;
             }
         }
+        o.add(s);
         ArrayList<String> r=new ArrayList<String>();
         for (int i = o.size()-1;i>-1;i--){
             r.add(o.get(i));
         }
         return r;
     }
+    /** Removes all words from wordList that begin with "b" and inserts them at the
+     *  front of wordList; all "b" words that are moved should appear in the same order
+     *  in the modified arrayList as they did before being moved
+     *
+     *  For example, this method will take a wordList:
+     *  ["apple", "banana", "cherry", "donut", "bagel", "danish", "berry", "baguette", "soda"]
+     *  and modify it to
+     *  ["banana", "bagel", "berry", "baguette", "apple", "cherry", "donut", "danish", "soda"]
+     *
+     *  DOES mutate (modify) elements in wordList
+     *  PRECONDITIONS: wordList.size() > 0, all strings in wordList have at least one character
+     *
+     *  @param wordList  arraylist of words
+     */
+    public static void moveBWords(ArrayList<String> wordList)
+    {
+        int p=0;
+        for (int i =0; i<wordList.size();i++){
+            if (wordList.get(i).substring(0,1).equals("b")) {
+                wordList.add(p,wordList.get(i));
+                wordList.remove(i+1);
+                p++;
+            }
+        }
+    }
+    /** Returns Arraylist of Integers that contain all mode(s) of the int array numList.
+     *  If elements in numList all appear exactly once, there is no mode, and this method
+     *  should return an empty list
+     *
+     *  For example, if numList is: [1, 2, 3, 2, 4, 5, 5, 6],
+     *  then numList contains two modes: 2, 5
+     *  and this method returns an arraylist containing 2 and 5 (in any order)
+     *  If numList is: [1, 2, 3, 2, 4, 5, 5, 6, 6, 7, 6],
+     *  then numList contains one mode: 6
+     *  and this method returns an arrayList containing 6
+     *  If numList is: [1, 2, 3, 4, 5, 6], then numList contains no mode
+     *  and this method returns an empty arrayList: []
+     *  If numList is: [2, 2, 2, 3, 3, 3, 4, 4, 4],
+     *  then numList contains three modes: 2, 3, 4
+     *  and this method returns an arrayList containing 2, 3, and 4 (in any order)
+     *
+     *  Does NOT mutate (modify) elements in numList
+     *  PRECONDITIONS: numList.length > 0
+     *
+     *  @param numList  numList of ints
+     */
+    public static ArrayList<Integer> modes(int[] numList)
+    {
+        int[] num = new int[numList.length];
+        for (int i = 0; i<numList.length;i++){
+            for (int in=0;in<numList.length;in++){
+                if (numList[i]==numList[in]){
+                    num[i]++;
+                }
+            }
+        }
+        ArrayList<Integer> mode = new ArrayList<Integer>();
+        int inde=0;
+        int l = num[inde];
+        for (int ind=0;ind<num.length;ind++){
+            if (num[ind]>l){
+                l=num[ind];
+                inde=ind;
+            }
+        }
+        mode.add(numList[inde]);
+        for (int j =0; j<numList.length;j++){
+            if (num[j]==numList[inde]&&num[j]!=numList[inde]) {
+                mode.add(num[j]);
+            }
+        }
+        return mode;
+    }
+
 }
